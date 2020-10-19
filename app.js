@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const youtubedl = require('youtube-dl')
+const downloadsFolder = require('downloads-folder');
 
 const { check, validationResult } = require('express-validator')
 
@@ -48,16 +49,17 @@ app.post('/download', urlencodedParser, [
       })
     })
 
+    video.pipe(fs.createWriteStream(downloadsFolder() + "\\video" + Math.floor(Math.random() * Math.floor(1000000000)) + ".mp4"));
    
-
-    youtubedl.getInfo(req.body.url, function(err, info) {
-      if (err) throw err
-      video.pipe(fs.createWriteStream('video.mp4'))
-      fs.rename('video.mp4', `${info._filename}.mp4`, () => { 
-        console.log("\nFile Renamed!\n"); 
+    // youtubedl.getInfo(req.body.url, function(err, info) {
+    //   if (err) throw err
+    //   fs.rename(downloadsFolder() + "\\video.mp4", `${info._filename}.mp4`, () => { 
+    //     console.log("\nFile Renamed!\n"); 
          
-      }); 
-    })
+    //   }); 
+    // })
+
+    
 
 
   }
